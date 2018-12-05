@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WebSocket demo</title>
+    </head>
+    <body>
+        <img id="image" src=""></img>
+        <script>
+            var socket = new WebSocket('ws://127.0.0.1:5678');
+            socket.binaryType = 'arraybuffer';
+            socket.onmessage = function (e) {
+            var arrayBuffer = e.data;
+            var bytes = new Uint8Array(arrayBuffer);
+            var blob  = new Blob([bytes.buffer]);
+
+            var image = document.getElementById('image');
+
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                image.src = e.target.result;
+            };
+            reader.readAsDataURL(blob);
+            };
+        </script>
+    </body>
+</html>
